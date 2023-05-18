@@ -14,7 +14,7 @@ pipeline {
         stage('Check Connection') {
             steps {
                 echo 'Checking AWS credentials...'
-                withAWS(region: 'us-west-', credentials: 'aws-access-key') {
+                withAWS(region: 'us-west-1', credentials: 'aws') {
                     sh 'aws ec2 describe-instances --instance-ids i-08ad1a8c785f300b7'
                 }
                 echo 'AWS credentials check successful!'
