@@ -7,6 +7,17 @@ pipeline {
                 echo 'Checking connection to GitHub...'
                 git branch: 'main', url: 'https://github.com/Caml02/radiotecm.git'
                 echo 'Connection to GitHub successful!'
+                
+                echo 'Checking AWS credentials...'
+                withCredentials([
+                    awsAccessKey(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
+                    awsSecretKey(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    sh 'aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID'
+                    sh 'aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY'
+                    sh 'aws ec2 describe-instances --instance-ids i-08ad1a8c785f300b7'
+                }
+                echo 'AWS credentials check successful!'
             }
         }
         
