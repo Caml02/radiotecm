@@ -20,4 +20,5 @@ pipeline {
                 echo 'AWS credentials check successful!'
             }
         }
+    }
 }
