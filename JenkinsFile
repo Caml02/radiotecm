@@ -1,16 +1,37 @@
-pipeline{
+pipeline {
     agent any
     
-    stages{
-        stage('Run Docker Compose'){
+    stages {
+        stage('Check Connection') {
             steps {
-                sh """ #!/bin/bash
-                    git submodule update --init --recursive
-                """
-                sh """ #!/bin/bash
-                    sudo docker-compose -f docker-compose-staging.yml up -d --build
-                """
+                echo 'Checking connection to GitHub...'
+                git url: 'https://github.com/Caml02/radiotecm.git'
+                echo 'Connection to GitHub successful!'
             }
-        }  
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t radiotec . -f Dockerfile'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                sh 'docker run -p 3000:3000 radiotec'
+            }
+        }
     }
 }
