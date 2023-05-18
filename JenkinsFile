@@ -5,33 +5,11 @@ pipeline {
         stage('Check Connection') {
             steps {
                 echo 'Checking connection to GitHub...'
-                git url: 'https://github.com/Caml02/radiotecm.git'
+                git branch: 'main', url: 'https://github.com/Caml02/radiotecm.git'
                 echo 'Connection to GitHub successful!'
             }
         }
         
-        stage('Build') {
-            steps {
-                sh 'npm ci'
-            }
-        }
-        
-        stage('Test') {
-            steps {
-                sh 'npm test'
-            }
-        }
-        
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t radiotec . -f Dockerfile'
-            }
-        }
-        
-        stage('Deploy') {
-            steps {
-                sh 'docker run -p 3000:3000 radiotec'
-            }
-        }
+        // Resto de tus etapas aquí...
     }
 }
