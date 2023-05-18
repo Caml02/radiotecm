@@ -6,13 +6,8 @@ pipeline {
             steps {
                 echo 'Checking connection to GitHub...'
                 git branch: 'main', url: 'https://github.com/Caml02/radiotecm.git'
-                echo 'Connection to GitHub successful!'    
-            }
-        }        
-    }
-     stages {
-        stage('Check Connection') {
-            steps {
+                echo 'Connection to GitHub successful!'
+                
                 echo 'Checking AWS credentials...'
                 withAWS(region: 'us-west-1', credentials: 'aws') {
                     sh 'aws ec2 describe-instances --instance-ids i-08ad1a8c785f300b7'
@@ -20,5 +15,7 @@ pipeline {
                 echo 'AWS credentials check successful!'
             }
         }
+        
+        // Resto de tus etapas aquí...
     }
 }
